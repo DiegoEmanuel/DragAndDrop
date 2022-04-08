@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import SingIn from "../views/SingIn.vue";
+import ListLeads from "../views/ListLeads.vue";
 
 const routes = [
   {
@@ -8,9 +9,14 @@ const routes = [
     component: SingIn,
   },
   {
-    path: "/about",
-    name: "about",
-    component: () => import("../views/AboutView.vue"),
+    path: "/cadLeads",
+    name: "cadLeads",
+    component: () => import("../views/cadLeads.vue"),
+  },
+  {
+    path: "/ListLeads",
+    name: "list",
+    component: ListLeads,
   },
 ];
 

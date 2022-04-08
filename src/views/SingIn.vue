@@ -7,7 +7,7 @@
       <h3 class="card-header text-center">Area de Registro</h3>
       <div class="form-row">
         <div class="form-group col-md-6">
-          <div class="summary text-red">Form has errors</div>
+          <div class="summary text-red"></div>
           <form @submit.prevent="register">
             <div class="form-row">
               <div class="form-group">
@@ -87,6 +87,7 @@ export default {
   },
   methods: {
     register() {
+      console.log(this.name);
       if (
         !this.v$.name.$invalid &&
         !this.v$.password.$invalid &&
