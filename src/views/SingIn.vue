@@ -11,7 +11,7 @@
           <form @submit.prevent="register">
             <div class="form-row">
               <div class="form-group">
-                <aria-label for="name">Nome</aria-label>
+                <aria-label for="name">Nome*</aria-label>
                 <input
                   placeholder="Informe um nome"
                   v-model="v$.name.$model"
@@ -27,7 +27,7 @@
             </div>
             <div class="form-row">
               <div class="form-group">
-                <aria-label for="password">Defina sua senha</aria-label>
+                <aria-label for="password">Defina sua senha*</aria-label>
                 <input
                   placeholder="Senha forte requerida"
                   class="form-control"
@@ -45,7 +45,7 @@
             <div class="form-row">
               <div class="form-group">
                 <aria-label for="confirmation_pass"
-                  >Confirme sua senha</aria-label
+                  >Confirme sua senha*</aria-label
                 >
                 <input
                   placeholder="Repita a senha acima"
@@ -60,11 +60,12 @@
                 >
               </div>
             </div>
-            <div class="col">
-              <button type="submit" class="btn btn-secondary">Registrar</button>
-            </div>
+            <button type="submit" class="btn btn-secondary center">
+              Registrar
+            </button>
           </form>
         </div>
+        <p class="center">*campos obrigatórios</p>
       </div>
     </div>
   </div>
@@ -127,6 +128,9 @@ export default {
 };
 </script>
 <style>
+.center {
+  margin-left: 20px;
+}
 .card-header {
   justify-content: center;
   align-items: center;
@@ -154,8 +158,8 @@ export default {
   width: 250px;
 }
 .col {
-  margin-top: 20px;
-  margin-left: 50%;
+  justify-content: center;
+  background-color: black;
   width: 100%;
 }
 </style>

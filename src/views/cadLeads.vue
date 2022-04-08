@@ -1,10 +1,10 @@
 <template>
-  <div class="container border border-dark">
+  <div class="container-sm border border-dark">
     <div class="lead row">
-      <figure class="imagem col-sm">
-        <img src="../assets/logo.png" alt="Minha Figura" />
-        <h1 class="display-2 col-sm">Nova lead</h1>
+      <figure class="imagem col-md-12">
+        <img src="../assets/logo.png" alt="Minha Figura" class="col-md-6" />
       </figure>
+      <h1 class="display-2 col-md-6">Nova Lead</h1>
     </div>
     <div class="row cad">
       <div class="col-sm left">
@@ -156,6 +156,21 @@ export default {
   width: 100%;
   height: 45px;
 }
+.lead {
+  justify-content: right;
+  align-items: right;
+}
+.container {
+  justify-content: center;
+  align-items: center;
+  margin-top: 5%;
+}
+.imagem {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .checkbox {
   background: green;
 }
@@ -172,14 +187,14 @@ export default {
   justify-content: right;
   align-items: right;
 }
-.container {
-  justify-content: center;
-  align-items: center;
-  margin-top: 5%;
-}
-.imagem {
+.display-2 {
+  width: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.lead {
+  justify-content: right;
+  align-items: right;
 }
 </style>
