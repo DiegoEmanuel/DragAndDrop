@@ -94,12 +94,20 @@ export default {
         !this.v$.password.$invalid &&
         !this.v$.confirm_password.$invalid
       ) {
+        const getUsers = [localStorage.users];
         const user = JSON.stringify({
           name: this.name,
           password: this.password,
         });
-        localStorage.user = user;
+        getUsers.push(user);
+        localStorage.users = getUsers;
+        this.clearForm();
       }
+    },
+    clearForm() {
+      this.name = "";
+      this.password = "";
+      this.confirm_password = "";
     },
   },
   validations() {

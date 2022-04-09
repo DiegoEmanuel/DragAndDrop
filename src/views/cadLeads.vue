@@ -7,9 +7,9 @@
       <h1 class="display-2 col-md-6">Nova Lead</h1>
     </div>
     <div class="row cad">
-      <div class="col-sm left">
-        <form @submit.prevent="save">
-          <div class="form-row">
+      <form @submit.prevent="save">
+        <div class="form row col-md-12">
+          <div class="col-md-5">
             <div class="form-group">
               <aria-label for="name">Nome</aria-label>
               <input
@@ -24,91 +24,120 @@
                 >Campo nome é requerido</span
               >
             </div>
-          </div>
-          <div class="form-row col-md-3">
+            <div class="form-row col-md-3">
+              <div class="form-group">
+                <aria-label for="telefone">Telefone</aria-label>
+                <input
+                  placeholder="Telefone"
+                  class="form-control"
+                  type="tel"
+                  name="telefone"
+                  id="telefone"
+                  v-model="v$.telefone.$model"
+                />
+                <span v-if="v$.telefone.$error" class="text-danger"
+                  >Campo telefone é requerido</span
+                >
+              </div>
+            </div>
             <div class="form-group">
-              <aria-label for="telefone">Telefone</aria-label>
+              <aria-label for="email">Insira seu email</aria-label>
               <input
-                placeholder="Telefone"
+                placeholder="Insira seu email"
                 class="form-control"
-                type="tel"
-                name="telefone"
-                id="telefone"
-                v-model="v$.telefone.$model"
+                type="email"
+                name="email"
+                id="email"
+                v-model="v$.email.$model"
               />
-              <span v-if="v$.telefone.$error" class="text-danger"
-                >Campo telefone é requerido</span
-              >
+              <span v-if="v$.email.$error" class="text-danger"
+                >Campo email é requerido
+              </span>
             </div>
           </div>
-          <div class="form-group">
-            <aria-label for="email">Defina sua senha</aria-label>
-            <input
-              placeholder="Insira seu email"
-              class="form-control"
-              type="email"
-              name="email"
-              id="email"
-              v-model="v$.email.$model"
-            />
-            <span v-if="v$.email.$error" class="text-danger"
-              >Campo email é requerido
-            </span>
-          </div>
-        </form>
-      </div>
-      <div class="col-sm right">
-        <form @submit.prevent="nova_lead">
-          <div class="form-row">
+          <div class="col-md-6 right">
             <div class="form-group">
-              <aria-label>Oportunidades</aria-label>
+              <aria-label>Oportunidades *</aria-label>
             </div>
             <table class="table">
               <thead>
                 <tr>
                   <th scope="col">
-                    <input type="checkbox" id="checkbox" v-model="checked" />
-                    <label for="checkbox">{{ checked }}</label>
+                    <input
+                      type="checkbox"
+                      @input="checkAll($event.target.checked)"
+                    />
                   </th>
-                  <th scope="col">First</th>
-                  <th scope="col">Last</th>
-                  <th scope="col">Handle</th>
+                  <th scope="col"></th>
+                  <th scope="col">Tipos</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <th scope="row">
-                    <input type="checkbox" id="checkbox" v-model="checked" />
-                    <label for="checkbox">{{ checked }}</label>
+                    <input
+                      type="checkbox"
+                      id="checkbox.rpa"
+                      v-model="opportunity.rpa"
+                    />
                   </th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
+                  <td>
+                    <label for="checkbox.rpa">RPA</label>
+                  </td>
                 </tr>
                 <tr>
                   <th scope="row">
-                    <input type="checkbox" id="checkbox" v-model="checked" />
-                    <label for="checkbox">{{ checked }}</label>
+                    <input
+                      type="checkbox"
+                      id="checkbox.produtodigital"
+                      v-model="opportunity.produtodigital"
+                    />
                   </th>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
+                  <td>
+                    <label for="checkbox.produtodigital">
+                      Produto Digital
+                    </label>
+                  </td>
                 </tr>
                 <tr>
                   <th scope="row">
-                    <input type="checkbox" id="checkbox" v-model="checked" />
-                    <label for="checkbox">{{ checked }}</label>
+                    <input
+                      type="checkbox"
+                      id="checkbox.analytics"
+                      v-model="opportunity.analytics"
+                    />
                   </th>
-                  <td>Larry</td>
-                  <td>the Bird</td>
-                  <td>@twitter</td>
+                  <td><label for="checkbox.analytics"> Analytics </label></td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    <input
+                      type="checkbox"
+                      id="checkbox.bpm"
+                      v-model="opportunity.bpm"
+                    />
+                  </th>
+                  <td>
+                    <label for="checkbox.bpm">BPM</label>
+                  </td>
                 </tr>
               </tbody>
             </table>
+            <p
+              class="alert alert-danger"
+              v-if="
+                !opportunity.bpm &
+                !opportunity.analytics &
+                !opportunity.rpa &
+                !opportunity.produtodigital
+              "
+            >
+              Marque pelo menos um campo
+            </p>
             <button type="submit" class="btn btn-primary">Salvar</button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -127,17 +156,57 @@ export default {
       name: "",
       telefone: "",
       email: "",
+      opportunity: {
+        rpa: false,
+        produtodigital: false,
+        analytics: false,
+        bpm: false,
+      },
     };
   },
   methods: {
     save() {
       if (!this.v$.name.$invalid) {
-        const user = JSON.stringify({
+        const getLeads = [localStorage.leads];
+        const leads = JSON.stringify({
           name: this.name,
           telefone: this.telefone,
           email: this.email,
+          opportunitys: this.opportunity,
         });
-        localStorage.user = user;
+        // alert(leads[0]);
+        if (
+          (this.opportunity.rpa === false) &
+          (this.opportunity.produtodigital === false)
+        ) {
+          alert(false);
+        }
+        getLeads.push(leads);
+        localStorage.leads = leads;
+      }
+    },
+    verificarCheckBox() {
+      var check = document.getElementsById("opportunity");
+
+      for (var i = 0; i < check.length; i++) {
+        if (check[i].checked == true) {
+          alert("true");
+        } else {
+          alert("false");
+        }
+      }
+    },
+    checkAll(check) {
+      if (check) {
+        this.opportunity.rpa = true;
+        this.opportunity.analytics = true;
+        this.opportunity.bpm = true;
+        this.opportunity.produtodigital = true;
+      } else {
+        this.opportunity.rpa = false;
+        this.opportunity.analytics = false;
+        this.opportunity.bpm = false;
+        this.opportunity.produtodigital = false;
       }
     },
   },
@@ -196,5 +265,8 @@ export default {
 .lead {
   justify-content: right;
   align-items: right;
+}
+.form {
+  padding: 5%;
 }
 </style>
