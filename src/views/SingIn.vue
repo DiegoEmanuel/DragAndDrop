@@ -88,19 +88,20 @@ export default {
   },
   methods: {
     register() {
-      console.log(this.name);
       if (
         !this.v$.name.$invalid &&
         !this.v$.password.$invalid &&
         !this.v$.confirm_password.$invalid
       ) {
-        const getUsers = [localStorage.users];
+        var confirmacao = confirm("Usuario inserido com sucesso");
+        const setUser = [localStorage.users];
         const user = JSON.stringify({
           name: this.name,
           password: this.password,
         });
-        getUsers.push(user);
-        localStorage.users = getUsers;
+        setUser.push(user);
+        localStorage.users = setUser;
+        confirmacao;
         this.clearForm();
       }
     },

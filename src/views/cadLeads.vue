@@ -11,9 +11,9 @@
         <div class="form row col-md-12">
           <div class="col-md-5">
             <div class="form-group">
-              <aria-label for="name">Nome</aria-label>
+              <aria-label for="name">Nome*</aria-label>
               <input
-                placeholder="Nome"
+                placeholder="Insira um nome"
                 v-model="v$.name.$model"
                 class="form-control"
                 type="text"
@@ -26,9 +26,9 @@
             </div>
             <div class="form-row col-md-3">
               <div class="form-group">
-                <aria-label for="telefone">Telefone</aria-label>
+                <aria-label for="telefone">Telefone*</aria-label>
                 <input
-                  placeholder="Telefone"
+                  placeholder="Insira um telefone"
                   class="form-control"
                   type="tel"
                   name="telefone"
@@ -40,8 +40,14 @@
                 >
               </div>
             </div>
+            <input
+              type="hidden"
+              class="form-control"
+              id="status"
+              name="status"
+            />
             <div class="form-group">
-              <aria-label for="email">Insira seu email</aria-label>
+              <aria-label for="email">Email*</aria-label>
               <input
                 placeholder="Insira seu email"
                 class="form-control"
@@ -54,12 +60,13 @@
                 >Campo email é requerido
               </span>
             </div>
+            <p class="center">*campos obrigatórios</p>
           </div>
-          <div class="col-md-6 right">
+          <div class="col-md-6">
             <div class="form-group">
-              <aria-label>Oportunidades *</aria-label>
+              <aria-label>Oportunidades* </aria-label>
             </div>
-            <table class="table">
+            <table class="table table-striped">
               <thead>
                 <tr>
                   <th scope="col">
@@ -68,8 +75,7 @@
                       @input="checkAll($event.target.checked)"
                     />
                   </th>
-                  <th scope="col"></th>
-                  <th scope="col">Tipos</th>
+                  <th scope="col">Oportunidades</th>
                 </tr>
               </thead>
               <tbody>
@@ -124,7 +130,7 @@
               </tbody>
             </table>
             <p
-              class="alert alert-danger"
+              class="alert alert-danger center"
               v-if="
                 !opportunity.bpm &
                 !opportunity.analytics &
@@ -166,23 +172,45 @@ export default {
   },
   methods: {
     save() {
-      if (!this.v$.name.$invalid) {
-        const getLeads = [localStorage.leads];
+      if (
+        !this.v$.name.$invalid &
+        !this.v$.telefone.$invalid &
+        !this.v$.$email
+      ) {
+        const setLeads = [localStorage.leads];
         const leads = JSON.stringify({
           name: this.name,
           telefone: this.telefone,
           email: this.email,
           opportunitys: this.opportunity,
         });
-        // alert(leads[0]);
         if (
           (this.opportunity.rpa === false) &
-          (this.opportunity.produtodigital === false)
+          (this.opportunity.produtodigital === false) &
+          (this.opportunity.analytics === false) &
+          (this.opportunity.bpm === false)
         ) {
-          alert(false);
+          alert("Escolha pelo menos 1 item");
+        } else {
+          setLeads.push(leads);
+          localStorage.leads = setLeads;
+          alert("Lead criada com sucesso");
+          window.location.href = "#/listLeads";
         }
-        getLeads.push(leads);
-        localStorage.leads = leads;
+      } else {
+        if (
+          !this.v$.name.$invalid |
+          !this.v$.telefone.$invalid |
+          !this.v$.$email |
+          ((this.opportunity.rpa === false) &
+            (this.opportunity.produtodigital === false) &
+            (this.opportunity.analytics === false) &
+            (this.opportunity.bpm === false))
+        ) {
+          alert(
+            "Campos nome, telefone, email obrigatórios e necessário pelo menos um interesse em alguma oportunidades "
+          );
+        }
       }
     },
     verificarCheckBox() {
@@ -248,9 +276,6 @@ export default {
 }
 .left {
   margin-left: 150px;
-}
-.right {
-  margin-right: 80px;
 }
 .lead {
   justify-content: right;
