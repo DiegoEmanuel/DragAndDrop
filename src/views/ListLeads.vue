@@ -109,7 +109,6 @@
             </tbody>
           </table>
         </div>
-        <form @submit.prevent=""></form>
       </div>
     </div>
   </div>
