@@ -2,7 +2,7 @@
   <div class="container-sm border border-dark">
     <div class="lead row">
       <figure class="imagem col-md-12">
-        <img src="../assets/logo.png" alt="Minha Figura" class="col-md-6" />
+        <img src="../assets/EloGroup.png" alt="Minha Figura" class="col-md-6" />
       </figure>
       <h1 class="display-2 col-md-6">Painel de Leads</h1>
     </div>
@@ -19,10 +19,10 @@
               <h3>Cliente em Potencial</h3>
             </div>
             <div class="pendentes col-md-4">
-              <h3>Dados confirmados</h3>
+              <h3>| Dados confirmados</h3>
             </div>
             <div class="pendentes col-md-4">
-              <h3>Reunião Agendada</h3>
+              <h3>| Reunião Agendada</h3>
             </div>
           </div>
           <div class="row col-md-12">
@@ -34,13 +34,13 @@
               class="drop-zone col-md-3"
             >
               <div
-                v-for="item in getList(1)"
+                v-for="item in getLeads(1)"
                 :key="item.id"
                 class="drag-el"
                 draggable="true"
                 @dragstart="startDrag($event, item)"
               >
-                {{ item.title }}
+                {{ item.name }}
               </div>
             </div>
             <div
@@ -53,11 +53,11 @@
               <div
                 draggable="true"
                 @dragstart="startDrag($event, item)"
-                v-for="item in getList(2)"
+                v-for="item in getLeads(2)"
                 :key="item.id"
                 class="drag-el"
               >
-                {{ item.title }}
+                {{ item.name }}
               </div>
             </div>
             <div
@@ -70,41 +70,32 @@
               <div
                 draggable="true"
                 @dragstart="startDrag($event, item)"
-                v-for="item in getList(3)"
+                v-for="item in getLeads(3)"
                 :key="item.id"
                 class="drag-el"
               >
-                {{ item.title }}
+                {{ item.name }}
               </div>
             </div>
+          </div>
+          <div class="showUsers">
+            <div class="col-sm-4" style="background-color: yellow"></div>
+            <div class="col-sm-4" style="background-color: red"></div>
+            <div class="col-sm-4" style="background-color: pink"></div>
           </div>
           <table class="table table-striped">
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Status</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
+              <tr v-for="lead in leads" :key="lead.id">
+                <th scope="row">{{ lead.id }}</th>
+                <td>{{ lead.name }}</td>
+                <td>{{ convertStatus(lead.status) }}</td>
               </tr>
             </tbody>
           </table>
@@ -115,72 +106,55 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import router from "@/router";
 export default {
-  setup() {
-    const items = ref([
-      { id: 0, title: "Item A", list: 1 },
-      { id: 1, title: "Item B", list: 2 },
-      { id: 2, title: "Item C", list: 3 },
-      { id: 3, title: "Item E", list: 1 },
-      { id: 4, title: "Item F", list: 2 },
-      { id: 5, title: "Item H", list: 3 },
-    ]);
-    const getList = (list) => {
-      return items.value.filter((item) => item.list == list);
+  data() {
+    return {
+      leads: JSON.parse(localStorage.leads),
     };
-    //fazer chamar as leads cadastradas na pagina anterior
-    // const getLeads = {
-    //   this: (leads = JSON.parse(localStorage.getItem("leads"))),
-    // };
-    const startDrag = (event, item) => {
-      console.log(item);
+  },
+  methods: {
+    startDrag(event, item) {
       event.dataTransfer.dropEffect = "move";
       event.dataTransfer.effectAllowed = "move";
       event.dataTransfer.setData("itemID", item.id);
-    };
-    const onDrop = (event, list) => {
+    },
+    onDrop(event, status) {
       const itemID = event.dataTransfer.getData("itemID");
-      const item = items.value.find((item) => item.id == itemID);
-      item.list = list;
-    };
-    // const loadLeads = { listLeads };
-
-    return {
-      getList,
-      onDrop,
-      startDrag,
-      // getLeads,
-    };
-  },
-
-  data() {},
-  methods: {
-    save() {
-      if (!this.v$.name.$invalid) {
-        const user = JSON.stringify({
-          name: this.name,
-          telefone: this.telefone,
-          email: this.email,
-        });
-        localStorage.lead = user;
+      const item = this.leads.find((item) => item.id == itemID);
+      if (item.status <= status) {
+        item.status = status;
+        localStorage.leads = JSON.stringify(this.leads);
+      } else {
+        alert("ta errado bro");
+      }
+    },
+    getLeads(status) {
+      return this.leads.filter((item) => item.status == status);
+    },
+    convertStatus(id) {
+      const status = {
+        1: "Cliente em potencial",
+        2: "Dados confirmados",
+        3: "Reunião agendada",
+      };
+      return status[id];
+    },
+    showLeads() {
+      var leadsSaved = localStorage.getItem("leads");
+      if (leadsSaved) {
+        alert("oi");
+      } else {
+        alert("nao achei");
       }
     },
     newLead() {
-      window.location.href = "#/cadLeads";
+      router.push("/createlead");
     },
   },
-  components: {},
 };
 </script>
 <style>
-.table_leads {
-  background-color: aquamarine;
-  width: 100%;
-  padding: 10px;
-  height: 100%;
-  margin-top: 8%;
-}
 .btn {
   width: 100%;
   height: 45px;
@@ -233,5 +207,6 @@ export default {
 }
 .table_topo {
   padding: 5%;
+  margin-bottom: -80px;
 }
 </style>

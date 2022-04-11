@@ -2,7 +2,7 @@
   <div class="container-sm border border-dark">
     <div class="lead row">
       <figure class="imagem col-md-12">
-        <img src="../assets/logo.png" alt="Minha Figura" class="col-md-6" />
+        <img src="../assets/EloGroup.png" alt="Minha Figura" class="col-md-6" />
       </figure>
       <h1 class="display-2 col-md-6">Nova Lead</h1>
     </div>
@@ -40,12 +40,6 @@
                 >
               </div>
             </div>
-            <input
-              type="hidden"
-              class="form-control"
-              id="status"
-              name="status"
-            />
             <div class="form-group">
               <aria-label for="email">Email*</aria-label>
               <input
@@ -151,6 +145,7 @@
 <script>
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
+import router from "@/router";
 
 export default {
   setup() {
@@ -173,17 +168,23 @@ export default {
   methods: {
     save() {
       if (
-        !this.v$.name.$invalid &
-        !this.v$.telefone.$invalid &
-        !this.v$.$email
+        (!this.v$.name.$invalid &
+          !this.v$.telefone.$invalid &
+          !this.v$.$email) |
+        ((this.opportunity.rpa === false) &
+          (this.opportunity.produtodigital === false) &
+          (this.opportunity.analytics === false) &
+          (this.opportunity.bpm === false))
       ) {
-        const setLeads = [localStorage.leads];
-        const leads = JSON.stringify({
+        const setLeads = JSON.parse(localStorage.leads);
+        const leads = {
           name: this.name,
           telefone: this.telefone,
           email: this.email,
           opportunitys: this.opportunity,
-        });
+          status: 1,
+          id: this.lastID(),
+        };
         if (
           (this.opportunity.rpa === false) &
           (this.opportunity.produtodigital === false) &
@@ -193,23 +194,9 @@ export default {
           alert("Escolha pelo menos 1 item");
         } else {
           setLeads.push(leads);
-          localStorage.leads = setLeads;
+          localStorage.leads = JSON.stringify(setLeads);
           alert("Lead criada com sucesso");
-          window.location.href = "#/listLeads";
-        }
-      } else {
-        if (
-          !this.v$.name.$invalid |
-          !this.v$.telefone.$invalid |
-          !this.v$.$email |
-          ((this.opportunity.rpa === false) &
-            (this.opportunity.produtodigital === false) &
-            (this.opportunity.analytics === false) &
-            (this.opportunity.bpm === false))
-        ) {
-          alert(
-            "Campos nome, telefone, email obrigatórios e necessário pelo menos um interesse em alguma oportunidades "
-          );
+          router.push("/listLeads");
         }
       }
     },
@@ -225,17 +212,18 @@ export default {
       }
     },
     checkAll(check) {
-      if (check) {
-        this.opportunity.rpa = true;
-        this.opportunity.analytics = true;
-        this.opportunity.bpm = true;
-        this.opportunity.produtodigital = true;
-      } else {
-        this.opportunity.rpa = false;
-        this.opportunity.analytics = false;
-        this.opportunity.bpm = false;
-        this.opportunity.produtodigital = false;
+      this.opportunity.rpa = check;
+      this.opportunity.analytics = check;
+      this.opportunity.bpm = check;
+      this.opportunity.produtodigital = check;
+    },
+    lastID() {
+      const leads = JSON.parse(localStorage.leads);
+      if (leads.length < 1) {
+        return 1;
       }
+      const lastLead = leads[leads.length - 1];
+      return lastLead.id + 1;
     },
   },
   validations() {
@@ -245,7 +233,6 @@ export default {
       email: { required },
     };
   },
-  components: {},
 };
 </script>
 <style>

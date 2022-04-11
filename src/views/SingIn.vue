@@ -2,7 +2,7 @@
   <div class="login">
     <div class="card">
       <figure class="imagem">
-        <img src="../assets/logo.png" alt="Minha Figura" />
+        <img src="../assets/EloGroup.png" alt="Minha Figura" />
       </figure>
       <h3 class="card-header text-center">Area de Registro</h3>
       <div class="form-row">
@@ -86,6 +86,11 @@ export default {
       confirm_password: "",
     };
   },
+  created() {
+    if (!localStorage.users) {
+      localStorage.users = JSON.stringify([]);
+    }
+  },
   methods: {
     register() {
       if (
@@ -133,7 +138,6 @@ export default {
       confirm_password: { required, sameAsPassword: sameAs(this.password) },
     };
   },
-  components: {},
 };
 </script>
 <style>
