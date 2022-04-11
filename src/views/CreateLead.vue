@@ -30,7 +30,7 @@
                 <input
                   placeholder="Insira um telefone"
                   class="form-control"
-                  type="tel"
+                  type="telefone"
                   name="telefone"
                   id="telefone"
                   v-model="v$.telefone.$model"

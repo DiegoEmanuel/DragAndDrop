@@ -100,13 +100,13 @@ export default {
         !this.v$.confirm_password.$invalid
       ) {
         var confirmacao = confirm("Usuario inserido com sucesso");
-        const setUser = [localStorage.users];
+        const setUser = JSON.parse(localStorage.users);
         const user = JSON.stringify({
           name: this.name,
           password: this.password,
         });
         setUser.push(user);
-        localStorage.users = setUser;
+        localStorage.users = JSON.stringify(setUser);
         confirmacao;
         this.clearForm();
         this.createLead();
@@ -179,5 +179,11 @@ export default {
   justify-content: center;
   background-color: black;
   width: 100%;
+}
+.imagem {
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  margin-left: 25%;
 }
 </style>
