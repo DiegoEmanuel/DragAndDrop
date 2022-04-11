@@ -9,7 +9,7 @@
     <div class="row cad">
       <div class="col-sm left">
         <div class="col-md-3">
-          <button @click="newLead" type="submit" class="btn btn-primary">
+          <button @click="createlead" type="submit" class="btn btn-primary">
             Novo lead
           </button>
         </div>
@@ -126,7 +126,7 @@ export default {
         item.status = status;
         localStorage.leads = JSON.stringify(this.leads);
       } else {
-        alert("ta errado bro");
+        alert("Não é permitido voltar o status de um item");
       }
     },
     getLeads(status) {
@@ -140,15 +140,7 @@ export default {
       };
       return status[id];
     },
-    showLeads() {
-      var leadsSaved = localStorage.getItem("leads");
-      if (leadsSaved) {
-        alert("oi");
-      } else {
-        alert("nao achei");
-      }
-    },
-    newLead() {
+    createlead() {
       router.push("/createlead");
     },
   },

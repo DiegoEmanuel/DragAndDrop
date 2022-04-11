@@ -74,6 +74,7 @@
 <script>
 import useVuelidate from "@vuelidate/core";
 import { required, minLength, sameAs } from "@vuelidate/validators";
+import router from "@/router";
 
 export default {
   setup() {
@@ -108,12 +109,16 @@ export default {
         localStorage.users = setUser;
         confirmacao;
         this.clearForm();
+        this.createLead();
       }
     },
     clearForm() {
       this.name = "";
       this.password = "";
       this.confirm_password = "";
+    },
+    createLead() {
+      router.push("/createlead");
     },
   },
   validations() {
