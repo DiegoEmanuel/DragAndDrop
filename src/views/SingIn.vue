@@ -180,10 +180,4 @@ export default {
   background-color: black;
   width: 100%;
 }
-.imagem {
-  justify-content: center;
-  align-items: center;
-  background-color: black;
-  margin-left: 25%;
-}
 </style>
