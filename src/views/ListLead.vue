@@ -4,7 +4,11 @@
     <div class="row cad">
       <div class="col-sm left">
         <div class="col-md-3">
-          <button @click="createlead" type="submit" class="btn btn-primary">
+          <button
+            @click="createlead"
+            type="submit"
+            class="button btn btn-primary"
+          >
             Novo lead
           </button>
         </div>
@@ -27,3 +31,8 @@ export default {
   },
 };
 </script>
+<style>
+.button {
+  margin-left: 30px;
+}
+</style>
