@@ -28,10 +28,6 @@ npm run lint
 ```
 
 ```
-npm install --save vue-good-table
-```
-
-```
 npm install --vuelidate
 ```
 
