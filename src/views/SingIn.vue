@@ -157,7 +157,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   width: 40%;
 }
 .card {
@@ -177,7 +176,6 @@ export default {
 }
 .col {
   justify-content: center;
-  background-color: black;
   width: 100%;
 }
 </style>
