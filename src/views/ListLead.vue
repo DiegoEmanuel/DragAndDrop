@@ -1,6 +1,6 @@
 <template>
   <div class="container-sm border border-dark">
-    <header-logo title="List Lead" />
+    <header-logo title="Listagem de Leads" />
     <div class="row cad">
       <div class="col-sm left">
         <div class="col-md-3">
