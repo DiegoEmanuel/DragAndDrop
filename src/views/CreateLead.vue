@@ -1,17 +1,21 @@
 <template>
   <div class="container-sm border border-dark">
     <div class="row cad">
+      <!-- chamando o componente HeaderLogo -->
       <HeaderLogo title="Nova Lead" />
+      <!-- chamando o componente CreateLeads -->
       <CreateLeads />
     </div>
   </div>
 </template>
 
 <script>
+// importando os components que serão necessários para renderizar a pag
 import HeaderLogo from "@/components/HeaderLogo.vue";
 import CreateLeads from "@/components/lead/CreateLeads.vue";
 
 export default {
+  //vai exportar nessa página esses dois componentes
   components: { HeaderLogo, CreateLeads },
 };
 </script>

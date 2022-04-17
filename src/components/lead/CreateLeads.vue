@@ -1,9 +1,11 @@
 <template>
+  <!-- formulário que ao submeter chamará a função "save" -->
   <form @submit.prevent="save">
     <div class="form row col-md-12">
       <div class="col-md-5">
         <div class="form-group">
           <aria-label for="name">Nome*</aria-label>
+          <!-- v-model = vue para deixar este input reativo -->
           <input
             placeholder="Insira um nome"
             v-model="v$.name.$model"
@@ -12,6 +14,7 @@
             name="name"
             id="name"
           />
+          <!-- span que aparecerá quando estiver $erro -->
           <span v-if="v$.name.$error" class="text-danger"
             >Campo nome é requerido</span
           >
@@ -56,6 +59,7 @@
           <thead>
             <tr>
               <th scope="col">
+                <!-- input para chamar função "" -->
                 <input
                   type="checkbox"
                   @input="checkAll($event.target.checked)"

@@ -1,6 +1,9 @@
 <template>
+  <!-- template da aplicação que será renderizado junto ao navegador 
+  dentro desta tag existe em sua maioria código HTML-->
   <div class="login">
     <div class="card">
+      <!-- Chamando a imagem diretamente -->
       <figure class="imagem">
         <img src="../assets/EloGroup.png" alt="Minha Figura" />
       </figure>
@@ -72,10 +75,11 @@
 </template>
 
 <script>
+//importando bibliotecas e dependências necessárias para rodar a aplicação
 import useVuelidate from "@vuelidate/core";
 import { required, minLength, sameAs } from "@vuelidate/validators";
 import router from "@/router";
-
+//exportação predefinida
 export default {
   setup() {
     return { v$: useVuelidate() };
@@ -87,24 +91,30 @@ export default {
       confirm_password: "",
     };
   },
+  //verificando se foi criado a tabela (nao necessário)
   created() {
     if (!localStorage.users) {
       localStorage.users = JSON.stringify([]);
     }
   },
   methods: {
+    //método de registro que vai identificar se os campos não estão inválidos
     register() {
       if (
         !this.v$.name.$invalid &&
         !this.v$.password.$invalid &&
         !this.v$.confirm_password.$invalid
       ) {
+        //caso verdade a variavel confirmação recebe o que ela mostrará
         var confirmacao = confirm("Usuario inserido com sucesso");
+        // setUser converte a string em um objeto
         const setUser = JSON.parse(localStorage.users);
+        //user converte o objeto em uma string
         const user = JSON.stringify({
           name: this.name,
           password: this.password,
         });
+        //enviando para o localstorage
         setUser.push(user);
         localStorage.users = JSON.stringify(setUser);
         confirmacao;
@@ -112,15 +122,19 @@ export default {
         this.createLead();
       }
     },
+    //Este método está limpando o formulário 
+    // na hora que terminar o processo de criação de usuario
     clearForm() {
       this.name = "";
       this.password = "";
       this.confirm_password = "";
     },
+    //indentificando a rota que será chamada após a criação do users
     createLead() {
       router.push("/createlead");
     },
   },
+  //validações nome do usuário, email, senha
   validations() {
     return {
       name: { required },

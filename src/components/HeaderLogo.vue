@@ -6,6 +6,7 @@
       </figure>
     </div>
     <div class="row col-md-6 nowrap">
+      <!-- essa prop será necessária para renderizar páginas que chamarão este componente -->
       <h1 class="display-2 col-md-4 text-nowrap">{{ title }}</h1>
     </div>
   </div>
